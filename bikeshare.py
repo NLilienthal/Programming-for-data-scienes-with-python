@@ -172,7 +172,7 @@ def user_stats(df):
     print('-'*40)
 
 def display_raw_data(df):
-    """Displays raw data when the user wants to see it."""
+    """Displays raw data when the user wants to see it. Otherwise the user can start the query again."""
 
     print(df.head())
     next = 0
