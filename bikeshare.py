@@ -28,7 +28,7 @@ def get_filters():
     months = ['all','january', 'february', 'march', 'april', 'may', 'june']
     month = input('\nPlease select for which month from january to june you want to see the data. \nIf you want so see the data from every month type "all": ')
     month = month.casefold()
-    
+
     if month not in months:
         month = input('Unfortunately your input is invalid. Please try again!')
         month = month.casefold()
@@ -59,16 +59,16 @@ def load_data(city, month, day):
     # Loading the data file into a dataframe.
     df = pd.read_csv(CITY_DATA[city])
 
-    
+
     # Converting the Start Time column to datetime
     df['Start Time'] = pd.to_datetime(df['Start Time'])
 
-    
+
     # Extracting month and day of week from Start Time to create new columns
     df['month'] = df['Start Time'].dt.month
     df['day_of_week'] = df['Start Time'].dt.weekday_name
 
-    
+
     # Filtering the data by month if applicable
     if month != 'all':
         # Useing the index of the months list to get corresponding integer
@@ -78,7 +78,7 @@ def load_data(city, month, day):
         # Filtering the data by month to create new dataframe
         df = df[df['month'] == month]
 
-              
+
     # Filtering the data by day of week if applicable
     if day != 'all':
         # Filtering by day of week to create the new dataframe
@@ -172,8 +172,8 @@ def user_stats(df):
     print('-'*40)
 
 def display_raw_data(df):
-    """Displays raw data when the user wants to see it.""" 
-    
+    """Displays raw data when the user wants to see it."""
+
     print(df.head())
     next = 0
     while True:
@@ -201,9 +201,8 @@ def main():
 
         restart = input('\nWould you like to restart? Enter yes or no.\n')
         if restart.lower() != 'yes':
+            print('Alright, have a nice day!')
             break
 
 if __name__ == "__main__":
     main()
-
-
