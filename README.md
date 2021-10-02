@@ -1,6 +1,6 @@
 # Programming-For-Data-Science-With-Python-Nanodegree
 
-This repository contains three projects did for Programming For Data Science With Python Nanodegree. The provider of this course is Udacity. The repository is created by Nils Lilienthal.
+This repository contains three projects did for "Programming For Data Science With Python" Nanodegree. The provider of this course is Udacity. The repository is created by Nils Lilienthal.
 
 # Project 1 : Investigate a Relational Database
 
