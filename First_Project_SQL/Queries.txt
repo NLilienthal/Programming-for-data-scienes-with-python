@@ -1,0 +1,63 @@
+/*QUERY 1 - query used for first insight*/
+WITH t1 AS (
+SELECT f.title, c.name, i.film_id, r.rental_id
+FROM rental r
+JOIN inventory i
+ON r.inventory_id = i.inventory_id
+JOIN film f
+ON i.film_id = f.film_id
+JOIN film_category fc
+ON f.film_id = fc.film_id 
+JOIN category c
+ON fc.category_id = c.category_id),
+t2 AS (SELECT title, name, COUNT (rental_id) AS rental_count
+FROM t1
+GROUP BY 1, 2
+ORDER BY name, title)
+SELECT DISTINCT t2.title film_title, t2.rental_count
+FROM t2
+JOIN T1
+ON t2.title = t1.title 
+WHERE t2.name = 'Animation' OR t2.name = 'Children' OR t2.name = 'Classics' OR t2.name = 'Comedy' OR t2.name = 'Family' OR t2.name = 'Music'
+ORDER BY t2.rental_count DESC
+LIMIT 10;
+
+/*QUERY 2 - query used for second insight*/
+WITH t1 AS (SELECT DISTINCT f.title film_title, c.name category_name, f.rental_duration
+FROM film f
+JOIN film_category fc
+ON f.film_id = fc.film_id
+JOIN category c
+ON fc.category_id = c.category_id
+ORDER BY rental_duration)
+SELECT DISTINCT category_name, AVG (rental_duration) AS AVG_duration
+FROM t1
+GROUP BY 1;
+
+/*QUERY 3 - query used for third insight*/
+WITH t1 AS (SELECT s.store_id, r.rental_date rental_date, r.rental_id rental_id, DATE_PART('month',rental_date) AS month,
+DATE_PART('year',rental_date) AS year
+FROM store s
+JOIN staff st
+ON s.store_id = st.store_id
+JOIN payment p
+ON st.staff_id = p.staff_id
+JOIN rental r
+ON p.rental_id = r.rental_id
+GROUP BY 1,2, 3)
+SELECT store_id, CONCAT (year, '-' , month) AS DATE, COUNT (rental_id) AS rental_count
+FROM t1
+GROUP BY 1, 2 
+ORDER BY 2, store_id;
+
+/*QUERY 4 - query used for fourth insight*/
+WITH t1 AS (SELECT CONCAT(c.first_name, ' ', c.last_name) AS name, p.amount AS amount, r.rental_date, r.customer_id
+FROM customer c
+JOIN payment p
+ON c.customer_id = p.customer_id 
+JOIN rental r
+ON p.rental_id = r.rental_id)
+SELECT DISTINCT name, SUM(amount) OVER(PARTITION BY customer_id) AS total_amount_per_customer
+FROM t1
+ORDER BY total_amount_per_customer DESC
+LIMIT 10;
